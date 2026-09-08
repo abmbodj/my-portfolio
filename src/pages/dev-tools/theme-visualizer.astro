@@ -1,10 +1,11 @@
 ---
 import { THEMES, SETTINGS } from "../../config";
 import DevToolsLayout from "../../layouts/DevToolsLayout.astro";
+import { withBase } from "../../utils/paths";
 
 const redirect: boolean = import.meta.env.PROD && !SETTINGS.addDevToolsInProduction;
 if (redirect) {
-    return Astro.redirect("/404");
+    return Astro.redirect(withBase("404"));
 }
 
 const lightThemes = Object.entries(THEMES).filter(([_, t]) => !t.isDark);
@@ -29,7 +30,7 @@ const darkThemes = Object.entries(THEMES).filter(([_, t]) => t.isDark);
                                     </h3>
                                     <div class="iframe-container">
                                         <iframe
-                                            src={`/?force_mode=light`}
+                                            src={withBase("?force_mode=light")}
                                             title={`${themeName} Light Preview`}
                                             loading="lazy"
                                             onload={`
@@ -67,7 +68,7 @@ const darkThemes = Object.entries(THEMES).filter(([_, t]) => t.isDark);
                                     </h3>
                                     <div class="iframe-container">
                                         <iframe
-                                            src={`/?force_mode=dark`}
+                                            src={withBase("?force_mode=dark")}
                                             title={`${themeName} Dark Preview`}
                                             loading="lazy"
                                             onload={`

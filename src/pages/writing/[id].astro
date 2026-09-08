@@ -1,0 +1,57 @@
+---
+import { getCollection } from "astro:content";
+import BaseDetail from "../../layouts/BaseDetail.astro";
+import ShareButtons from "../../components/ui/ShareButtons.astro";
+import { getReadingTime } from "../../utils/readingTime";
+import { PAGES } from "../../config";
+import { withBase } from "../../utils/paths";
+
+if (PAGES.writing.isActive === false) {
+    return Astro.redirect(withBase("404"));
+}
+
+export async function getStaticPaths() {
+    if (PAGES.writing.isActive === false) return [];
+    const entries = await getCollection("writing", ({ data }) => data.draft !== true);
+    const sortedEntries = entries.sort(
+        (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+    );
+
+    return sortedEntries.map((entry, index) => ({
+        params: { id: entry.id },
+        props: {
+            entry,
+            previousEntry: index > 0 ? sortedEntries[index - 1] : null,
+            nextEntry: index < sortedEntries.length - 1 ? sortedEntries[index + 1] : null,
+        },
+    }));
+}
+
+const { entry, previousEntry, nextEntry } = Astro.props;
+const readingTime = `${getReadingTime(entry.body || "")} min read`;
+const entryUrl = new URL(Astro.url.pathname, Astro.site || new URL("https://example.com")).href;
+---
+
+<BaseDetail collection="writing" id={entry.id}>
+    <div slot="share" class="container-narrow">
+        <p class="body-sm writing-reading-time">{readingTime}</p>
+        <ShareButtons title={entry.data.title} url={entryUrl} description={entry.data.description} />
+    </div>
+
+    {(previousEntry || nextEntry) && (
+        <nav slot="footer" class="post-navigation container-narrow flex justify-between mt-24 pt-12 gap-8" aria-label="Writing navigation">
+            {previousEntry ? (
+                <a href={withBase(`writing/${previousEntry.id}`)} class="nav-prev flex flex-col group max-w-[45%] no-underline">
+                    <span class="nav-label">Previous</span>
+                    <span class="nav-title">{previousEntry.data.title}</span>
+                </a>
+            ) : <span />}
+            {nextEntry && (
+                <a href={withBase(`writing/${nextEntry.id}`)} class="nav-next flex flex-col items-end text-right group max-w-[45%] no-underline">
+                    <span class="nav-label">Next</span>
+                    <span class="nav-title">{nextEntry.data.title}</span>
+                </a>
+            )}
+        </nav>
+    )}
+</BaseDetail>

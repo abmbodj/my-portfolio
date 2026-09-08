@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-04T16:07:45Z",
+  "title": "Design System: Personal Software Engineer Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "light-accent": { "role": "primary", "displayName": "Signal Blue", "canonical": "#1d4ed8", "tonalRamp": ["#0b1538", "#10245c", "#153587", "#1d4ed8", "#507be4", "#86a4ed", "#bfd0f6", "#eef3fd"] },
+      "dark-accent": { "role": "primary", "displayName": "Burnished Coral", "canonical": "#d97757", "tonalRamp": ["#321711", "#58281d", "#7f3d2c", "#a9573e", "#d97757", "#e8a088", "#f2c8b9", "#fbefea"] }
+    },
+    "typographyMeta": {
+      "title": { "displayName": "Title", "purpose": "Page and identity headings." },
+      "body": { "displayName": "Body", "purpose": "Readable portfolio copy." },
+      "label": { "displayName": "Label", "purpose": "Code, tags, and compact metadata only." }
+    },
+    "shadows": [],
+    "motion": [{ "name": "state-transition", "value": "200ms ease-out", "purpose": "Color and focus feedback only." }],
+    "breakpoints": [{ "name": "mobile", "value": "768px" }, { "name": "desktop", "value": "1024px" }]
+  },
+  "components": [
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "A restrained bordered action.",
+      "html": "<a class=\"ds-btn\" href=\"#\">Open resume</a>",
+      "css": ".ds-btn { display:inline-flex; align-items:center; justify-content:center; padding:8px 16px; border:1px solid var(--border); border-radius:4px; background:transparent; color:var(--foreground); font:600 14px/1.5 Inter,system-ui,sans-serif; text-decoration:none; transition:color 200ms ease-out,border-color 200ms ease-out; } .ds-btn:hover { color:var(--accent); border-color:var(--accent); } .ds-btn:focus-visible { outline:2px dashed var(--accent); outline-offset:2px; }"
+    },
+    {
+      "name": "Navigation Link",
+      "kind": "nav",
+      "description": "The compact primary navigation treatment.",
+      "html": "<a class=\"ds-nav\" href=\"#\">Projects</a>",
+      "css": ".ds-nav { color:var(--foreground); font:600 14px/1.5 Inter,system-ui,sans-serif; text-underline-offset:6px; } .ds-nav:hover { color:var(--accent); } .ds-nav:focus-visible { outline:2px dashed var(--accent); outline-offset:2px; }"
+    },
+    {
+      "name": "Topic Tag",
+      "kind": "chip",
+      "description": "A text-only technical topic tag.",
+      "html": "<a class=\"ds-tag\" href=\"#\">#typescript</a>",
+      "css": ".ds-tag { color:var(--accent); font:700 13px/1 JetBrains Mono,monospace; text-decoration:none; } .ds-tag:hover { text-decoration:underline; } .ds-tag:focus-visible { outline:2px dashed var(--accent); outline-offset:2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Engineering Field Note",
+    "overview": "The portfolio is a carefully edited engineering record: compact, legible, and confident enough to let the work speak.",
+    "keyCharacteristics": ["Content-first two-column layout", "Compact spacing with clear grouping", "One functional accent per theme", "Flat surfaces separated by borders", "Direct interaction labels"],
+    "rules": [{ "name": "The One Accent Rule", "body": "Never introduce a second decorative accent within a theme.", "section": "colors" }, { "name": "The Flat-by-Default Rule", "body": "No drop shadows, glass layers, or simulated floating cards.", "section": "elevation" }],
+    "dos": ["Do use the existing theme tokens and one accent per theme.", "Do provide intentional empty, missing-file, keyboard, and reduced-motion states."],
+    "donts": ["Don't use trendy developer clichés: terminal cosplay, neon gradients, skill meters, excessive animation, or generic technology icon walls.", "Don't hide Resume access behind the embedded PDF viewer."]
+  }
+}

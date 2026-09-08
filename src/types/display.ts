@@ -7,16 +7,15 @@ export interface DisplayMeta {
 export interface DisplayLink {
     href: string;
     label: string;
+    external?: boolean;
 }
 
 export interface ListingItem {
     title: string;
     description?: string;
     date?: string;
-    authors?: string;
-    extraInput?: string;
     tags: string[];
-    externalUrl?: string;
+    links: DisplayLink[];
     image?: string;
 }
 

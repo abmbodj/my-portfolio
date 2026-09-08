@@ -1,15 +1,8 @@
 export type {
     Bio,
-    CVItem,
-    EducationItem,
-    ExperienceItem,
-    CV,
     BasePage,
-    Blog,
+    Writing,
     Project,
-    Publication,
-    Talk,
-    Teaching,
 } from "./content";
 
 export type { DisplayLink, DisplayMeta, ListingItem, DetailItem } from "./display";
@@ -23,4 +16,5 @@ export type {
     PagesConfig,
     NavLink,
     SocialLink,
+    ResumeConfig,
 } from "./config";

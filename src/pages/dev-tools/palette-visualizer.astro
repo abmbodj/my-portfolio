@@ -1,11 +1,12 @@
 ---
 import { THEMES, SETTINGS } from "../../config";
 import DevToolsLayout from "../../layouts/DevToolsLayout.astro";
+import { withBase } from "../../utils/paths";
 
 const redirect: boolean =
     import.meta.env.PROD && !SETTINGS.addDevToolsInProduction;
 if (redirect) {
-    return Astro.redirect("/404");
+    return Astro.redirect(withBase("404"));
 }
 ---
 

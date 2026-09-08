@@ -1,4 +1,4 @@
-import type { ListingItem, DetailItem } from "../types";
+import type { DisplayLink, ListingItem, DetailItem } from "../types";
 
 function formatDate(dateValue: string | Date | undefined): string | undefined {
     if (!dateValue) return undefined;
@@ -9,15 +9,21 @@ function formatDate(dateValue: string | Date | undefined): string | undefined {
 
 export function getListingItem(entry: any, collection?: string): ListingItem {
     const d = entry.data;
+    const links: DisplayLink[] = [];
+
+    if (d.repository_url) {
+        links.push({ href: d.repository_url, label: "View repository", external: true });
+    }
+    if (d.live_url) {
+        links.push({ href: d.live_url, label: "View live project", external: true });
+    }
     
     return {
         title: d.title,
         description: d.description,
         date: formatDate(d.date),
-        authors: d.author,
-        extraInput: d.journal || d.event || d.institution,
         tags: d.tags || [],
-        externalUrl: d.external_url,
+        links,
         image: d.image,
     };
 }
@@ -27,6 +33,6 @@ export function getDetailItem(entry: any, collection: string): DetailItem {
     
     return {
         ...listing,
-        backHref: collection === 'posts' ? '/posts' : `/${collection}`,
+        backHref: `/${collection}`,
     };
 }

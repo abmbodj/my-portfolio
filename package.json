@@ -1,5 +1,5 @@
 {
-  "name": "academic-portfolio-astro",
+  "name": "personal-software-engineer-portfolio",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -23,5 +23,8 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.128.0"
   }
 }

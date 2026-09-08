@@ -3,9 +3,10 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BaseItemCard from "../components/ui/BaseItemCard.astro";
 import { getListingItem } from "../utils/adapters";
+import { withBase } from "../utils/paths";
 
 interface Props {
-    collection: "publications" | "talks" | "projects" | "posts" | "teaching" | "all";
+    collection: "projects" | "writing" | "all";
     title: string;
     subtitle?: string;
     entries?: any[];
@@ -14,7 +15,9 @@ interface Props {
 
 const { collection, title, subtitle, entries: manualEntries, page } = Astro.props;
 
-let entries = manualEntries || (collection !== "all" ? await getCollection(collection as any) : []);
+let entries = manualEntries || (collection !== "all"
+    ? await getCollection(collection as "projects" | "writing", ({ data }) => data.draft !== true)
+    : []);
 if (page) entries = page.data;
 
 const sortedEntries = entries.sort((a: any, b: any) => {
@@ -22,6 +25,17 @@ const sortedEntries = entries.sort((a: any, b: any) => {
     const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
     return dateB - dateA;
 });
+
+const emptyCopy = {
+    projects: {
+        title: "Projects coming soon",
+        description: "Add project files when you are ready to share selected work.",
+    },
+    writing: {
+        title: "Writing coming soon",
+        description: "Add writing files when you are ready to publish technical notes.",
+    },
+};
 ---
 
 <BaseLayout title={title}>
@@ -32,12 +46,19 @@ const sortedEntries = entries.sort((a: any, b: any) => {
         </header>
     )}
 
-    <section class="item-list">
-        {sortedEntries.map((entry: any) => {
+    {sortedEntries.length > 0 ? (
+        <section class="item-list">
+            {sortedEntries.map((entry: any) => {
             const item = getListingItem(entry);
-            return <BaseItemCard {...item} href={`/${collection}/${entry.id}`} />;
-        })}
-    </section>
+            return <BaseItemCard {...item} href={withBase(`${collection}/${entry.id}`)} />;
+            })}
+        </section>
+    ) : collection !== "all" ? (
+        <section class="empty-state" data-empty-state={collection}>
+            <h2>{emptyCopy[collection].title}</h2>
+            <p>{emptyCopy[collection].description}</p>
+        </section>
+    ) : null}
 
     {page && page.lastPage > 1 && (
         <nav class="pagination">

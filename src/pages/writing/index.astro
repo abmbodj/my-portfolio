@@ -3,13 +3,13 @@ import BaseListing from "../../layouts/BaseListing.astro";
 import { PAGES } from "../../config";
 import { withBase } from "../../utils/paths";
 
-if (PAGES.projects.isActive === false) {
+if (PAGES.writing.isActive === false) {
     return Astro.redirect(withBase("404"));
 }
 ---
 
 <BaseListing
-    title={PAGES.projects.title}
-    subtitle={PAGES.projects.subtitle}
-    collection="projects"
+    collection="writing"
+    title={PAGES.writing.title}
+    subtitle={PAGES.writing.subtitle}
 />

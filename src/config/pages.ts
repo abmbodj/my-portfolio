@@ -2,43 +2,28 @@ import type { PagesConfig } from "../types";
 
 export const PAGES: PagesConfig = {
     home: {
-        title: "About Me",
+        title: "About",
         subtitle: "",
         isActive: true,
     },
-    blog: {
-        title: "Blog",
-        subtitle: "Thoughts on physics, philosophy, and music.",
-        isActive: true,
-    },
-    publications: {
-        title: "Publications",
-        subtitle: "A collection of research papers and scientific articles.",
-        isActive: true,
-    },
-    talks: {
-        title: "Talks & Presentations",
-        subtitle: "Public lectures, colloquia, and conference presentations.",
-        isActive: true,
-    },
     projects: {
-        title: "Code & Projects",
-        subtitle: "Open source contributions and technological experiments.",
+        title: "Projects",
+        subtitle: "Selected software projects and the decisions behind them.",
         isActive: true,
     },
-    teaching: {
-        title: "Teaching",
-        subtitle: "Academic courses and educational materials.",
+    writing: {
+        title: "Writing",
+        subtitle: "Notes on software engineering, systems, and craft.",
+        isActive: true,
+    },
+    resume: {
+        title: "Resume",
+        subtitle: "Professional experience and technical background.",
         isActive: true,
     },
     tags: {
         title: "Tags",
-        subtitle: "Explore content by topic.",
-        isActive: true,
-    },
-    cv: {
-        title: "Curriculum Vitae",
-        subtitle: "Academic and professional history.",
+        subtitle: "Browse projects and writing by topic.",
         isActive: true,
     },
 };

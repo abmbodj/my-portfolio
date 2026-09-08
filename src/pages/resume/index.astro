@@ -1,0 +1,45 @@
+---
+import { existsSync } from "node:fs";
+import path from "node:path";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { PAGES, RESUME } from "../../config";
+import { withBase } from "../../utils/paths";
+
+if (PAGES.resume.isActive === false) {
+    return Astro.redirect(withBase("404"));
+}
+
+const resumePath = path.resolve("public", RESUME.pdfPath);
+const resumeAvailable = existsSync(resumePath);
+const resumeHref = withBase(RESUME.pdfPath);
+---
+
+<BaseLayout title={PAGES.resume.title} description={PAGES.resume.subtitle}>
+    <header class="page-header resume-header">
+        <div>
+            <h1 class="page-title">{PAGES.resume.title}</h1>
+            <p class="page-subtitle">{PAGES.resume.subtitle}</p>
+        </div>
+    </header>
+
+    {resumeAvailable ? (
+        <section class="resume-document" data-resume-state="available" aria-label="Resume document">
+            <div class="resume-actions" aria-label="Resume actions">
+                <a class="btn" href={resumeHref} target="_blank" rel="noopener noreferrer">Open resume</a>
+                <a class="btn btn-primary" href={resumeHref} download={RESUME.downloadName}>Download PDF</a>
+            </div>
+            <p class="resume-mobile-note body-sm">Use the buttons above to view or save the PDF on a smaller screen.</p>
+            <div class="resume-viewer">
+                <iframe src={resumeHref} title="Resume PDF viewer" loading="eager"></iframe>
+                <p class="resume-viewer-fallback body-sm">
+                    If the document does not load, <a href={resumeHref} target="_blank" rel="noopener noreferrer">open the resume in a new tab</a>.
+                </p>
+            </div>
+        </section>
+    ) : (
+        <section class="empty-state" data-resume-state="missing">
+            <h2>Resume not added yet</h2>
+            <p>Add your PDF at <code>public/{RESUME.pdfPath}</code>. It will appear here automatically on the next build.</p>
+        </section>
+    )}
+</BaseLayout>

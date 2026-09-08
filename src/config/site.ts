@@ -1,13 +1,11 @@
 import type { SiteConfig, ThemeConfig, SettingsConfig, UmamiAnalyticsConfig, AnalyticsConfig } from "../types";
 
 export const SITE: SiteConfig = {
-    website: "https://shannon.github.io/academic-portfolio-astro/",
-    author: "Claude Shannon",
-    desc: "Personal academic portfolio and blog of Claude Shannon, Father of Information Theory.",
-    title: "Claude Shannon",
-    ogImage: "shannon.webp",
-    postPerPage: 5,
-    favicon: "/favicon.svg",
+    author: "Your Name",
+    role: "Software Engineer",
+    desc: "Software engineer portfolio featuring selected projects and technical writing.",
+    title: "Your Name",
+    favicon: "favicon.svg",
     lang: "en",
 };
 
@@ -18,9 +16,9 @@ export const THEME_CONFIG: ThemeConfig = {
 };
 
 export const SETTINGS: SettingsConfig = {
-    showTagsInNavbar: true,
+    showTagsInNavbar: false,
     showRSSInFooter: true,
-    addDevToolsInProduction: true,
+    addDevToolsInProduction: false,
 };
 
 const umami: UmamiAnalyticsConfig = {

@@ -5,7 +5,7 @@
 
 /* ===========================================
    UNIFIED VISUAL IDENTITY SYSTEM
-   Based on DESIGN-GUIDE.md principles
+   Based on DESIGN.md principles
    =========================================== */
 
 @theme {
@@ -23,16 +23,29 @@
 :root,
 html[data-theme="light"] {
     --sidebar-bg: var(--background);
+    --background: var(--lightBg);
+    --foreground: var(--lightFg);
+    --accent: var(--lightAccent);
+    --text-muted: var(--lightMuted);
+    --border: var(--lightBorder);
+    --surface: var(--lightSurface);
 }
 
 html[data-theme="dark"],
 html.dark {
     --sidebar-bg: var(--background);
+    --background: var(--darkBg);
+    --foreground: var(--darkFg);
+    --accent: var(--darkAccent);
+    --text-muted: var(--darkMuted);
+    --border: var(--darkBorder);
+    --surface: var(--darkSurface);
 }
 
 html {
     font-family: "Inter", system-ui, sans-serif;
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 }
 
 body {
@@ -288,6 +301,25 @@ a:hover,
     text-decoration: underline;
 }
 
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.item-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.item-link {
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
 
 /* Tags/Badges */
 .tag {
@@ -325,6 +357,17 @@ a:hover,
 
 .btn:hover {
     border-color: var(--accent);
+    color: var(--accent);
+}
+
+.btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--background);
+}
+
+.btn-primary:hover {
+    background: transparent;
     color: var(--accent);
 }
 
@@ -446,6 +489,20 @@ a:hover,
     letter-spacing: -0.02em;
     line-height: 1.2;
     color: var(--foreground);
+}
+
+.sidebar-role {
+    margin-top: 0.35rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.sidebar-availability {
+    margin-top: 0.4rem;
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 .sidebar-info {
@@ -733,6 +790,112 @@ a:hover,
     gap: 2rem;
 }
 
+.empty-state {
+    max-width: 640px;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.empty-state h2 {
+    margin: 0 0 0.5rem;
+}
+
+.empty-state p {
+    max-width: 60ch;
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.resume-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.resume-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.resume-viewer {
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.resume-viewer iframe {
+    display: block;
+    width: 100%;
+    height: min(78vh, 980px);
+    min-height: 640px;
+    border: 0;
+    background: var(--surface);
+}
+
+.resume-viewer-fallback {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+}
+
+.resume-mobile-note {
+    display: none;
+    color: var(--text-muted);
+}
+
+.writing-reading-time {
+    color: var(--text-muted);
+}
+
+.post-navigation {
+    border-top: 1px solid var(--border);
+}
+
+.nav-prev,
+.nav-next {
+    text-decoration: none;
+}
+
+.nav-label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.nav-title {
+    color: var(--foreground);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.nav-prev:hover .nav-title,
+.nav-next:hover .nav-title {
+    color: var(--accent);
+}
+
+.tag-cloud > * {
+    animation: fade-in 0.4s ease-out both;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 /* Pagination */
 .pagination {
     display: flex;
@@ -952,5 +1115,14 @@ a:hover,
 
     .nav-link {
         font-size: 0.85rem;
+    }
+
+    .resume-mobile-note {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .resume-viewer {
+        display: none;
     }
 }

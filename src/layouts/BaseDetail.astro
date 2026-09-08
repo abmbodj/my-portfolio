@@ -4,30 +4,26 @@ import BaseLayout from "./BaseLayout.astro";
 import BackLink from "../components/ui/BackLink.astro";
 import Tag from "../components/ui/Tag.astro";
 import Icon from "../components/ui/Icon.astro";
+import ContentLinks from "../components/content/ContentLinks.astro";
 import { getDetailItem } from "../utils/adapters";
 import { SITE } from "../config";
+import { withBase } from "../utils/paths";
 
 interface Props {
-    collection: "publications" | "talks" | "projects" | "posts" | "teaching";
+    collection: "projects" | "writing";
     id: string;
 }
 
 const { collection, id } = Astro.props;
 const entry = (await getEntry(collection, id)) as any;
 
-if (!entry) return Astro.redirect("/404");
+if (!entry) return Astro.redirect(withBase("404"));
 
 const { Content } = await render(entry);
 const detail = getDetailItem(entry, collection);
 
 const meta = [];
 if (detail.date) meta.push({ label: "Date", value: detail.date, icon: "Calendar" });
-if (detail.authors) meta.push({ label: "Author", value: detail.authors, icon: "User" });
-if (detail.extraInput) {
-    const icon = "Institution";
-    const label = collection === "publications" ? "Journal" : collection === "talks" ? "Event" : collection === "teaching" ? "Institution" : "Info";
-    meta.push({ label, value: detail.extraInput, icon });
-}
 
 const description = entry.data.description || detail.description || SITE.desc;
 const ogImage = entry.data.image || SITE.ogImage;
@@ -35,12 +31,8 @@ const ogImage = entry.data.image || SITE.ogImage;
 
 <BaseLayout title={detail.title} description={description} ogImage={ogImage} ogType="article">
     <div class="flex justify-between items-center mb-4">
-        <BackLink href={detail.backHref} label={collection} />
-        {detail.externalUrl && (
-            <a href={detail.externalUrl} target="_blank" rel="noopener noreferrer" class="link">
-                View external
-            </a>
-        )}
+        <BackLink href={withBase(detail.backHref)} label={collection} />
+        <ContentLinks links={detail.links} />
     </div>
 
     <article>

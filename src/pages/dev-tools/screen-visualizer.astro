@@ -1,10 +1,11 @@
 ---
 import { SETTINGS } from "../../config";
 import DevToolsLayout from "../../layouts/DevToolsLayout.astro";
+import { withBase } from "../../utils/paths";
 
 const redirect: boolean = import.meta.env.PROD && !SETTINGS.addDevToolsInProduction;
 if (redirect) {
-    return Astro.redirect("/404");
+    return Astro.redirect(withBase("404"));
 }
 
 const viewports = [
@@ -45,7 +46,7 @@ const viewports = [
                                 </div>
                                 <div class="relative w-full" style={`padding-top: ${(vp.height / vp.width) * 100}%;`}>
                                     <iframe
-                                        src="/"
+                                        src={withBase("")}
                                         title={`${vp.name} Preview`}
                                         class="absolute top-0 left-0 w-full h-full border-none"
                                     />

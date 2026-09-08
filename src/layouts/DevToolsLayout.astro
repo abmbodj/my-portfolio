@@ -9,6 +9,7 @@ import "@fontsource/inter/800.css";
 import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
 import "../styles/global.css";
+import { withBase } from "../utils/paths";
 
 interface Props {
     title: string;
@@ -22,56 +23,19 @@ const themeDarkKey = (THEME_CONFIG.themeDark.startsWith('dark_') ? THEME_CONFIG.
 
 const themeLight = THEMES[themeLightKey] || THEMES.light_default;
 const themeDark = THEMES[themeDarkKey] || THEMES.dark_default;
+const themeStyle = `--lightBg:${themeLight.background};--lightFg:${themeLight.foreground};--lightAccent:${themeLight.accent};--lightMuted:${themeLight.muted};--lightBorder:${themeLight.border};--lightSurface:${themeLight.surface};--darkBg:${themeDark.background};--darkFg:${themeDark.foreground};--darkAccent:${themeDark.accent};--darkMuted:${themeDark.muted};--darkBorder:${themeDark.border};--darkSurface:${themeDark.surface};`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" style={themeStyle}>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href={SITE.favicon} />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/svg+xml" href={withBase(SITE.favicon)} />
+        <link rel="icon" href={withBase("favicon.ico")} sizes="any" />
         <title>{title} | Dev Tools</title>
         <meta name="description" content={description || "Development internal tools."} />
         <meta name="robots" content="noindex, nofollow" />
-
-        <style
-            is:global
-            define:vars={{
-                lightBg: themeLight.background,
-                lightFg: themeLight.foreground,
-                lightAccent: themeLight.accent,
-                lightMuted: themeLight.muted,
-                lightBorder: themeLight.border,
-                lightSurface: themeLight.surface,
-
-                darkBg: themeDark.background,
-                darkFg: themeDark.foreground,
-                darkAccent: themeDark.accent,
-                darkMuted: themeDark.muted,
-                darkBorder: themeDark.border,
-                darkSurface: themeDark.surface,
-            }}
-        >
-            :root {
-                --background: var(--lightBg);
-                --foreground: var(--lightFg);
-                --accent: var(--lightAccent);
-                --text-muted: var(--lightMuted);
-                --border: var(--lightBorder);
-                --surface: var(--lightSurface);
-                scrollbar-gutter: stable;
-            }
-
-            [data-theme="dark"] {
-                --background: var(--darkBg);
-                --foreground: var(--darkFg);
-                --accent: var(--darkAccent);
-                --text-muted: var(--darkMuted);
-                --border: var(--darkBorder);
-                --surface: var(--darkSurface);
-            }
-        </style>
 
         <ClientRouter />
 
@@ -114,9 +78,9 @@ const themeDark = THEMES[themeDarkKey] || THEMES.dark_default;
                     {description && <p class="text-lg opacity-60 mt-2">{description}</p>}
                 </div>
                 <div class="flex gap-4 items-center">
-                    <a href="/dev-tools" class="font-semibold text-sm transition-colors duration-200 hover:text-accent">Dev Tools Menu</a>
+                    <a href={withBase("dev-tools")} class="font-semibold text-sm transition-colors duration-200 hover:text-accent">Dev Tools Menu</a>
                     <span class="opacity-30">|</span>
-                    <a href="/" class="font-semibold text-sm transition-colors duration-200 hover:text-accent">Live Site &rarr;</a>
+                    <a href={withBase("")} class="font-semibold text-sm transition-colors duration-200 hover:text-accent">Live Site &rarr;</a>
                 </div>
             </header>
 

@@ -1,10 +1,9 @@
 export interface SiteConfig {
-    website: string;
     author: string;
+    role: string;
     desc: string;
     title: string;
-    ogImage: string;
-    postPerPage: number;
+    ogImage?: string;
     favicon: string;
     lang: string;
 }
@@ -48,6 +47,11 @@ export interface PageConfig {
     title: string;
     subtitle: string;
     isActive: boolean;
+}
+
+export interface ResumeConfig {
+    pdfPath: string;
+    downloadName: string;
 }
 
 export type PagesConfig = Record<string, PageConfig>;

@@ -1,19 +1,18 @@
 ---
 import Tag from "./Tag.astro";
 import Icon from "./Icon.astro";
+import type { DisplayLink } from "../../types";
 
 interface Props {
     title: string;
     href: string;
     description?: string;
     date?: string;
-    authors?: string;
-    extraInput?: string;
     tags?: string[];
-    externalUrl?: string;
+    links?: DisplayLink[];
 }
 
-const { title, href, description, date, authors, extraInput, tags, externalUrl } = Astro.props;
+const { title, href, description, date, tags, links = [] } = Astro.props;
 ---
 
 <article class="card">
@@ -25,18 +24,6 @@ const { title, href, description, date, authors, extraInput, tags, externalUrl }
                 <span class="flex items-center gap-1">
                     <Icon name="Calendar" size={24} />
                     <span>{date}</span>
-                </span>
-            )}
-            {authors && (
-                <span class="flex items-center gap-1">
-                    <Icon name="User" size={24} />
-                    <span>{authors}</span>
-                </span>
-            )}
-            {extraInput && (
-                <span class="flex items-center gap-1">
-                    <Icon name="Institution" size={24} />
-                    <span>{extraInput}</span>
                 </span>
             )}
         </div>
@@ -54,13 +41,18 @@ const { title, href, description, date, authors, extraInput, tags, externalUrl }
         {description && <p class="card-desc">{description}</p>}
     </div>
 
-    {
-        externalUrl && (
-            <div class="flex-shrink-0">
-                <a href={externalUrl} target="_blank" rel="noopener noreferrer" class="card-link">
-                    View
+    {links.length > 0 && (
+        <div class="card-actions">
+            {links.map((link) => (
+                <a
+                    href={link.href}
+                    target={link.external !== false ? "_blank" : undefined}
+                    rel={link.external !== false ? "noopener noreferrer" : undefined}
+                    class="card-link"
+                >
+                    {link.label}
                 </a>
-            </div>
-        )
-    }
+            ))}
+        </div>
+    )}
 </article>

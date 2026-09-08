@@ -10,9 +10,9 @@
 
 ## Architecture
 - **Barrel files:** `src/config/index.ts`, `src/types/index.ts`
-- **Content:** `src/content/` - Add `.md` files to subdirectories (posts/, publications/, projects/, talks/, teaching/)
-- **Config:** `src/config/` - site.ts (SITE, THEME_CONFIG, SETTINGS, ANALYTICS), pages.ts (PAGES), navigation.ts (NAV_LINKS), social.ts (SOCIALS), themes.ts
-- **Types:** `src/types/` - content.ts (Bio, CVItem, etc.), display.ts (ListingItem, DetailItem), config.ts, themes.ts
+- **Content:** `src/content/` - Add `.md` files to projects/ and writing/
+- **Config:** `src/config/` - site.ts (SITE, THEME_CONFIG, SETTINGS, ANALYTICS), pages.ts (PAGES), navigation.ts (NAV_LINKS), social.ts (SOCIALS), resume.ts (RESUME), themes.ts
+- **Types:** `src/types/` - content.ts (Bio, Project, Writing), display.ts (ListingItem, DetailItem), config.ts, themes.ts
 - **Styles:** `src/styles/global.css` - Theme colors, base styles
 - **Assets:** `src/assets/icons.ts` - Icon definitions
 
@@ -26,4 +26,4 @@
 - Tailwind CSS v4 uses `@tailwindcss/vite` plugin (no tailwind.config.js)
 - LaTeX math rendering via remark-math/rehype-katex
 - Analytics supported via GA4 (`ga4Id`) and Umami (`umami.websiteId`) — configure in `src/config/site.ts`
-- No lint/typecheck scripts configured
+- Regression tests run with `node --test test/*.test.mjs`
