@@ -15,6 +15,7 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const outputRoot = path.join(projectRoot, "dist");
 const publicResume = path.join(projectRoot, "public", "resume.pdf");
 const publicAvatar = path.join(projectRoot, "public", "avatar.jpg");
+const globalStyles = path.join(projectRoot, "src", "styles", "global.css");
 const basePath = "/academic-portfolio-astro/";
 
 function build() {
@@ -85,6 +86,13 @@ test("builds Abdoulaye Mbodj's portfolio with only the intended public sections"
     assert.match(home, /Pennsylvania/);
     assert.match(home, /Lowicks/);
     assert.match(home, /Arcadia University/);
+    assert.match(home, /class="prose about-prose"/);
+    assert.match(home, /building AI-assisted tools and full-stack products for developers and students/);
+    assert.match(home, /At <strong>Lowicks<\/strong>/);
+    assert.match(home, /At <strong>Arcadia University<\/strong>/);
+    assert.match(home, /Explore my selected projects for implementation details, or view my résumé for my complete background/);
+    assert.doesNotMatch(home, /My recent work spans/);
+    assert.match(readFileSync(globalStyles, "utf8"), /\.about-prose p:last-child\s*\{[^}]*color: var\(--text-muted\)/s);
     assert.match(home, /href="https:\/\/github\.com\/abmbodj"/);
     assert.match(home, /href="https:\/\/www\.linkedin\.com\/in\/ambodj"/);
     assert.match(home, /href="mailto:pmbodj49@gmail\.com"/);

@@ -764,6 +764,30 @@ a:hover,
     margin: 2rem 0;
 }
 
+.about-prose {
+    max-width: 680px;
+}
+
+.about-prose p {
+    margin-bottom: 1.25rem;
+}
+
+.about-prose p:first-child {
+    font-size: 1.075rem;
+    font-weight: 500;
+    line-height: 1.75;
+}
+
+.about-prose strong {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.about-prose p:last-child {
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
+
 
 /* ===========================================
    SHARED COMPONENTS
