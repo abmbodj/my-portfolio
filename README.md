@@ -67,6 +67,7 @@ For a project page such as `username.github.io/my-portfolio`, use `BASE_PATH=/my
 
 - `npm run dev` starts the development server.
 - `npm run build` creates the static production build.
+- `npm run deploy` builds and deploys the site to Cloudflare Workers.
 - `npm run preview` previews the production build.
 - `node --test test/*.test.mjs` runs portfolio regression tests.
 

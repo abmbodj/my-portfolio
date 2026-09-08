@@ -4,6 +4,8 @@ scripts/gen-favicon/favicons/
 dist/
 # generated types
 .astro/
+# Wrangler local development state
+.wrangler/
 
 # dependencies
 node_modules/

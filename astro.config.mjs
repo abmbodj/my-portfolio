@@ -22,7 +22,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: process.env.SITE_URL || env.SITE_URL || 'https://example.com',
+  site: process.env.SITE_URL || env.SITE_URL || 'https://my-portfolio.pmbodj49.workers.dev',
   base: process.env.BASE_PATH || env.BASE_PATH || '/',
   integrations: [
     sitemap({

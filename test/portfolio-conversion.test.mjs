@@ -16,6 +16,7 @@ const outputRoot = path.join(projectRoot, "dist");
 const publicResume = path.join(projectRoot, "public", "resume.pdf");
 const publicAvatar = path.join(projectRoot, "public", "avatar.jpg");
 const globalStyles = path.join(projectRoot, "src", "styles", "global.css");
+const wranglerConfig = path.join(projectRoot, "wrangler.jsonc");
 const basePath = "/academic-portfolio-astro/";
 
 function build() {
@@ -66,6 +67,30 @@ function minimalPdf() {
 
     return Buffer.from(pdf);
 }
+
+test("configures Wrangler to serve Astro's static build with its generated 404 page", () => {
+    const config = JSON.parse(readFileSync(wranglerConfig, "utf8"));
+
+    assert.equal(config.assets?.directory, "./dist");
+    assert.equal(config.assets?.not_found_handling, "404-page");
+});
+
+test("builds for the workers.dev production URL at the domain root by default", () => {
+    execFileSync("npm", ["run", "build"], {
+        cwd: projectRoot,
+        env: {
+            ...process.env,
+            SITE_URL: "",
+            BASE_PATH: "",
+        },
+        stdio: "pipe",
+    });
+
+    const home = readOutput("index.html");
+    assert.match(home, /<link rel="canonical" href="https:\/\/my-portfolio\.pmbodj49\.workers\.dev\/">/);
+    assert.match(home, /href="\/projects\/?"/);
+    assert.doesNotMatch(home, /academic-portfolio-astro/);
+});
 
 test("builds Abdoulaye Mbodj's portfolio with only the intended public sections", () => {
     assert.equal(existsSync(publicResume), true, "the personalized portfolio must ship the supplied resume");
