@@ -1,7 +1,7 @@
 ---
 name: "Abdoulaye “Ab” Mbodj"
 role: "Software Engineer"
-avatar: "https://avatars.githubusercontent.com/u/93449335?v=4"
+avatar: "avatar.jpg"
 shortBio: "I build AI-enabled developer tools, student products, and full-stack applications."
 location: "Pennsylvania"
 ---

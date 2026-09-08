@@ -2,10 +2,8 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import {
     existsSync,
-    mkdirSync,
     readdirSync,
     readFileSync,
-    rmSync,
     writeFileSync,
 } from "node:fs";
 import os from "node:os";
@@ -16,8 +14,7 @@ import { fileURLToPath } from "node:url";
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outputRoot = path.join(projectRoot, "dist");
 const publicResume = path.join(projectRoot, "public", "resume.pdf");
-const bioFixture = path.join(projectRoot, "src", "content", "bio.md");
-const projectFixture = path.join(projectRoot, "src", "content", "projects", "test-project.md");
+const publicAvatar = path.join(projectRoot, "public", "avatar.jpg");
 const basePath = "/academic-portfolio-astro/";
 
 function build() {
@@ -71,6 +68,7 @@ function minimalPdf() {
 
 test("builds Abdoulaye Mbodj's portfolio with only the intended public sections", () => {
     assert.equal(existsSync(publicResume), true, "the personalized portfolio must ship the supplied resume");
+    assert.equal(existsSync(publicAvatar), true, "the personalized portfolio must ship a local avatar");
     build();
 
     for (const page of ["index.html", "projects/index.html", "writing/index.html", "resume/index.html", "tags/index.html"]) {
@@ -90,7 +88,8 @@ test("builds Abdoulaye Mbodj's portfolio with only the intended public sections"
     assert.match(home, /href="https:\/\/github\.com\/abmbodj"/);
     assert.match(home, /href="https:\/\/www\.linkedin\.com\/in\/ambodj"/);
     assert.match(home, /href="mailto:pmbodj49@gmail\.com"/);
-    assert.match(home, /src="https:\/\/avatars\.githubusercontent\.com\/u\/93449335\?v=4"/);
+    assert.match(home, /src="\/academic-portfolio-astro\/avatar\.jpg"/);
+    assert.doesNotMatch(home, /avatars\.githubusercontent\.com/);
     assert.doesNotMatch(home, /267-891-0367/);
     assert.match(home, /href="\/academic-portfolio-astro\/projects\/?"/);
     assert.doesNotMatch(home, /href="\/academic-portfolio-astro\/writing\/?"/);
@@ -116,7 +115,10 @@ test("builds Abdoulaye Mbodj's portfolio with only the intended public sections"
     const resume = readOutput("resume/index.html");
     assert.match(resume, /data-resume-state="available"/);
     assert.match(resume, /download="Abdoulaye-Mbodj-Resume\.pdf"/);
-    assert.match(resume, /<iframe[^>]*src="\/academic-portfolio-astro\/resume\.pdf"/);
+    assert.match(resume, /<a class="resume-preview-link" href="\/academic-portfolio-astro\/resume\.pdf"/);
+    assert.match(resume, /<img[^>]*src="\/academic-portfolio-astro\/resume-preview\.png"/);
+    assert.match(resume, /alt="Preview of Abdoulaye Mbodj’s résumé"/);
+    assert.doesNotMatch(resume, /<iframe/);
 });
 
 test("renders repository and live links for the selected projects", () => {
@@ -150,41 +152,18 @@ test("prefixes every generated local URL with the configured base path", () => {
 });
 
 test("renders engineer content links, project tags, and the configured resume", () => {
-    mkdirSync(path.dirname(projectFixture), { recursive: true });
-    const originalBio = readFileSync(bioFixture, "utf8");
-
-    writeFileSync(
-        bioFixture,
-        originalBio.replace(
-            /^avatar:.*$/m,
-            'avatar: "images/test-avatar.png"',
-        ),
-    );
-
-    writeFileSync(projectFixture, `---
-title: "Test Project"
-description: "A test project used to verify the portfolio content model."
-date: "2026-01-15"
-tags:
-  - "TypeScript"
-repository_url: "https://github.com/example/test-project"
-live_url: "https://example.com/test-project"
----
-
-Test project details.
-`);
     const originalResume = readFileSync(publicResume);
     writeFileSync(publicResume, minimalPdf());
 
     try {
         build();
 
-        const project = readOutput("projects/test-project/index.html");
+        const project = readOutput("projects/riven/index.html");
         assert.match(project, /View repository/);
         assert.match(project, /View live project/);
 
         assert.equal(existsSync(path.join(outputRoot, "tags", "typescript", "index.html")), true);
-        assert.match(readOutput("index.html"), /src="\/academic-portfolio-astro\/images\/test-avatar\.png"/);
+        assert.match(readOutput("index.html"), /src="\/academic-portfolio-astro\/avatar\.jpg"/);
 
         const rss = readOutput("rss.xml");
         assert.doesNotMatch(rss, /Test Note/);
@@ -194,11 +173,9 @@ Test project details.
         assert.match(resume, /data-resume-state="available"/);
         assert.match(resume, /href="\/academic-portfolio-astro\/resume\.pdf"[^>]*>Open resume</);
         assert.match(resume, /href="\/academic-portfolio-astro\/resume\.pdf"[^>]*download="Abdoulaye-Mbodj-Resume\.pdf"[^>]*>Download PDF</);
-        assert.match(resume, /<iframe[^>]*src="\/academic-portfolio-astro\/resume\.pdf"/);
-        assert.match(resume, /title="Resume PDF viewer"/);
+        assert.match(resume, /src="\/academic-portfolio-astro\/resume-preview\.png"/);
+        assert.doesNotMatch(resume, /<iframe/);
     } finally {
-        writeFileSync(bioFixture, originalBio);
-        rmSync(projectFixture, { force: true });
         writeFileSync(publicResume, originalResume);
     }
 });

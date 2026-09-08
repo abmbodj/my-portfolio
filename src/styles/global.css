@@ -822,31 +822,24 @@ a:hover,
 }
 
 .resume-viewer {
-    border: 1px solid var(--border);
-    border-radius: 0.25rem;
-    overflow: hidden;
-    background: var(--surface);
+    display: flex;
+    justify-content: center;
 }
 
-.resume-viewer iframe {
+.resume-preview-link {
     display: block;
     width: 100%;
-    height: min(78vh, 980px);
-    min-height: 640px;
-    border: 0;
-    background: var(--surface);
+    max-width: 816px;
+    text-decoration: none;
 }
 
-.resume-viewer-fallback {
-    margin: 0;
-    padding: 0.75rem 1rem;
-    border-top: 1px solid var(--border);
-    color: var(--text-muted);
-}
-
-.resume-mobile-note {
-    display: none;
-    color: var(--text-muted);
+.resume-preview {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.14);
 }
 
 .writing-reading-time {
@@ -1117,12 +1110,7 @@ a:hover,
         font-size: 0.85rem;
     }
 
-    .resume-mobile-note {
-        display: block;
-        margin-bottom: 1rem;
-    }
-
-    .resume-viewer {
-        display: none;
+    .resume-actions .btn {
+        flex: 1;
     }
 }

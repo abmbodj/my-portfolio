@@ -12,6 +12,7 @@ if (PAGES.resume.isActive === false) {
 const resumePath = path.resolve("public", RESUME.pdfPath);
 const resumeAvailable = existsSync(resumePath);
 const resumeHref = withBase(RESUME.pdfPath);
+const resumePreviewHref = withBase("resume-preview.png");
 ---
 
 <BaseLayout title={PAGES.resume.title} description={PAGES.resume.subtitle}>
@@ -28,12 +29,24 @@ const resumeHref = withBase(RESUME.pdfPath);
                 <a class="btn" href={resumeHref} target="_blank" rel="noopener noreferrer">Open resume</a>
                 <a class="btn btn-primary" href={resumeHref} download={RESUME.downloadName}>Download PDF</a>
             </div>
-            <p class="resume-mobile-note body-sm">Use the buttons above to view or save the PDF on a smaller screen.</p>
             <div class="resume-viewer">
-                <iframe src={resumeHref} title="Resume PDF viewer" loading="eager"></iframe>
-                <p class="resume-viewer-fallback body-sm">
-                    If the document does not load, <a href={resumeHref} target="_blank" rel="noopener noreferrer">open the resume in a new tab</a>.
-                </p>
+                <a
+                    class="resume-preview-link"
+                    href={resumeHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open Abdoulaye Mbodj’s résumé PDF"
+                >
+                    <img
+                        class="resume-preview"
+                        src={resumePreviewHref}
+                        alt="Preview of Abdoulaye Mbodj’s résumé"
+                        width="1632"
+                        height="2112"
+                        loading="eager"
+                        decoding="async"
+                    />
+                </a>
             </div>
         </section>
     ) : (
