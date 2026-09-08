@@ -1,10 +1,10 @@
 import type { SiteConfig, ThemeConfig, SettingsConfig, UmamiAnalyticsConfig, AnalyticsConfig } from "../types";
 
 export const SITE: SiteConfig = {
-    author: "Your Name",
+    author: "Abdoulaye “Ab” Mbodj",
     role: "Software Engineer",
-    desc: "Software engineer portfolio featuring selected projects and technical writing.",
-    title: "Your Name",
+    desc: "Software engineer building AI-enabled developer tools, student products, and full-stack applications.",
+    title: "Abdoulaye “Ab” Mbodj",
     favicon: "favicon.svg",
     lang: "en",
 };

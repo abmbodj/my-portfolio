@@ -8,17 +8,17 @@ export const PAGES: PagesConfig = {
     },
     projects: {
         title: "Projects",
-        subtitle: "Selected software projects and the decisions behind them.",
+        subtitle: "Selected AI, developer-tooling, and full-stack projects.",
         isActive: true,
     },
     writing: {
         title: "Writing",
         subtitle: "Notes on software engineering, systems, and craft.",
-        isActive: true,
+        isActive: false,
     },
     resume: {
         title: "Resume",
-        subtitle: "Professional experience and technical background.",
+        subtitle: "Experience, education, projects, and technical skills.",
         isActive: true,
     },
     tags: {

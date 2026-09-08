@@ -1,15 +1,15 @@
 ---
-name: "Your Name"
+name: "Abdoulaye “Ab” Mbodj"
 role: "Software Engineer"
-shortBio: "I build reliable software and thoughtful developer experiences."
+avatar: "https://avatars.githubusercontent.com/u/93449335?v=4"
+shortBio: "I build AI-enabled developer tools, student products, and full-stack applications."
+location: "Pennsylvania"
 ---
 
-I am a software engineer focused on building useful, maintainable products.
+I am a software engineer and Computer Science student at Arcadia University. I enjoy building products that make complex work feel simpler, from AI-assisted developer tools to software that helps students learn and collaborate.
 
-This is starter copy. Replace it with a short introduction covering the problems you enjoy solving, the systems you have worked on, and the impact you want to make.
+I currently work as a Software Engineering Intern at Lowicks, contributing to marketplace experiences across Cloudflare Workers and React Native. I also support students, faculty, and staff as an Information Technology Support Assistant at Arcadia University.
 
-## What to add
+My recent work spans TypeScript, React, React Native, Python, Swift, Supabase, PostgreSQL, Deno, and Bun. I am especially interested in practical LLM integrations, reliable full-stack systems, and developer experiences that make powerful technology easier to understand and use.
 
-- A concise summary of your engineering focus
-- The types of teams or products you want to work with
-- A few technologies or domains that genuinely represent your experience
+For implementation details, explore my selected projects or view my résumé.

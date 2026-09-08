@@ -2,9 +2,16 @@ import type { DisplayLink, ListingItem, DetailItem } from "../types";
 
 function formatDate(dateValue: string | Date | undefined): string | undefined {
     if (!dateValue) return undefined;
-    const date = typeof dateValue === 'string' ? new Date(dateValue) : dateValue;
+    const dateOnly = typeof dateValue === "string"
+        ? dateValue.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+        : null;
+    const date = dateOnly
+        ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+        : typeof dateValue === "string"
+            ? new Date(dateValue)
+            : dateValue;
     if (isNaN(date.getTime())) return undefined;
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+    return date.toLocaleDateString("en-US", { year: "numeric", month: "long" });
 }
 
 export function getListingItem(entry: any, collection?: string): ListingItem {

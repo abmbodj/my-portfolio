@@ -18,7 +18,6 @@ const outputRoot = path.join(projectRoot, "dist");
 const publicResume = path.join(projectRoot, "public", "resume.pdf");
 const bioFixture = path.join(projectRoot, "src", "content", "bio.md");
 const projectFixture = path.join(projectRoot, "src", "content", "projects", "test-project.md");
-const writingFixture = path.join(projectRoot, "src", "content", "writing", "test-note.md");
 const basePath = "/academic-portfolio-astro/";
 
 function build() {
@@ -70,8 +69,8 @@ function minimalPdf() {
     return Buffer.from(pdf);
 }
 
-test("builds the neutral portfolio shell with only the intended public sections", () => {
-    assert.equal(existsSync(publicResume), false, "the neutral template must not ship a resume");
+test("builds Abdoulaye Mbodj's portfolio with only the intended public sections", () => {
+    assert.equal(existsSync(publicResume), true, "the personalized portfolio must ship the supplied resume");
     build();
 
     for (const page of ["index.html", "projects/index.html", "writing/index.html", "resume/index.html", "tags/index.html"]) {
@@ -83,10 +82,18 @@ test("builds the neutral portfolio shell with only the intended public sections"
     }
 
     const home = readOutput("index.html");
-    assert.match(home, /Your Name/);
+    assert.match(home, /Abdoulaye “Ab” Mbodj/);
     assert.match(home, /Software Engineer/);
+    assert.match(home, /Pennsylvania/);
+    assert.match(home, /Lowicks/);
+    assert.match(home, /Arcadia University/);
+    assert.match(home, /href="https:\/\/github\.com\/abmbodj"/);
+    assert.match(home, /href="https:\/\/www\.linkedin\.com\/in\/ambodj"/);
+    assert.match(home, /href="mailto:pmbodj49@gmail\.com"/);
+    assert.match(home, /src="https:\/\/avatars\.githubusercontent\.com\/u\/93449335\?v=4"/);
+    assert.doesNotMatch(home, /267-891-0367/);
     assert.match(home, /href="\/academic-portfolio-astro\/projects\/?"/);
-    assert.match(home, /href="\/academic-portfolio-astro\/writing\/?"/);
+    assert.doesNotMatch(home, /href="\/academic-portfolio-astro\/writing\/?"/);
     assert.match(home, /href="\/academic-portfolio-astro\/resume\/?"/);
     assert.doesNotMatch(home, /Publications|Teaching|Claude Shannon|Bell Labs/);
     assert.doesNotMatch(home, /Developer Tools/);
@@ -94,13 +101,40 @@ test("builds the neutral portfolio shell with only the intended public sections"
     const sitemap = readOutput("sitemap-0.xml");
     assert.doesNotMatch(sitemap, /\/dev-tools(?:\/|<)/);
 
-    assert.match(readOutput("projects/index.html"), /data-empty-state="projects"/);
-    assert.match(readOutput("writing/index.html"), /data-empty-state="writing"/);
+    const projects = readOutput("projects/index.html");
+    for (const project of ["AgentShelf", "Dawn", "Riven", "ArchieAI"]) {
+        assert.match(projects, new RegExp(project));
+    }
+    for (const date of ["July 2026", "June 2026", "December 2025", "October 2024"]) {
+        assert.match(projects, new RegExp(date));
+    }
+
+    const writing = readOutput("writing/index.html");
+    assert.match(writing, /http-equiv="refresh"/);
+    assert.match(writing, /academic-portfolio-astro\/404/);
 
     const resume = readOutput("resume/index.html");
-    assert.match(resume, /data-resume-state="missing"/);
-    assert.match(resume, /Resume not added yet/);
-    assert.doesNotMatch(resume, /<iframe/);
+    assert.match(resume, /data-resume-state="available"/);
+    assert.match(resume, /download="Abdoulaye-Mbodj-Resume\.pdf"/);
+    assert.match(resume, /<iframe[^>]*src="\/academic-portfolio-astro\/resume\.pdf"/);
+});
+
+test("renders repository and live links for the selected projects", () => {
+    build();
+
+    const expectedProjects = [
+        ["agentshelf", "https://github.com/abmbodj/AgentShelf"],
+        ["dawn", "https://github.com/abmbodj/Dawn"],
+        ["riven", "https://github.com/abmbodj/Riven"],
+        ["archieai", "https://github.com/abmbodj/ArchieAI"],
+    ];
+
+    for (const [slug, repository] of expectedProjects) {
+        const project = readOutput(`projects/${slug}/index.html`);
+        assert.match(project, new RegExp(repository.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    }
+
+    assert.match(readOutput("projects/riven/index.html"), /https:\/\/rivenos\.com/);
 });
 
 test("prefixes every generated local URL with the configured base path", () => {
@@ -115,14 +149,16 @@ test("prefixes every generated local URL with the configured base path", () => {
     assert.deepEqual(urlsOutsideBase, []);
 });
 
-test("renders engineer content links, writing RSS, tags, and the configured resume", () => {
+test("renders engineer content links, project tags, and the configured resume", () => {
     mkdirSync(path.dirname(projectFixture), { recursive: true });
-    mkdirSync(path.dirname(writingFixture), { recursive: true });
     const originalBio = readFileSync(bioFixture, "utf8");
 
     writeFileSync(
         bioFixture,
-        originalBio.replace(/^---\n/, '---\navatar: "images/test-avatar.png"\n'),
+        originalBio.replace(
+            /^avatar:.*$/m,
+            'avatar: "images/test-avatar.png"',
+        ),
     );
 
     writeFileSync(projectFixture, `---
@@ -137,17 +173,7 @@ live_url: "https://example.com/test-project"
 
 Test project details.
 `);
-    writeFileSync(writingFixture, `---
-title: "Test Note"
-date: "2026-02-01"
-description: "A test note used to verify Writing, RSS, and tags."
-tags:
-  - "TypeScript"
-image: "images/test-note.png"
----
-
-Test note body.
-`);
+    const originalResume = readFileSync(publicResume);
     writeFileSync(publicResume, minimalPdf());
 
     try {
@@ -157,26 +183,23 @@ Test note body.
         assert.match(project, /View repository/);
         assert.match(project, /View live project/);
 
-        assert.equal(existsSync(path.join(outputRoot, "writing", "test-note", "index.html")), true);
         assert.equal(existsSync(path.join(outputRoot, "tags", "typescript", "index.html")), true);
         assert.match(readOutput("index.html"), /src="\/academic-portfolio-astro\/images\/test-avatar\.png"/);
-        assert.match(readOutput("writing/test-note/index.html"), /content="https:\/\/example\.com\/academic-portfolio-astro\/images\/test-note\.png"/);
 
         const rss = readOutput("rss.xml");
-        assert.match(rss, /Test Note/);
+        assert.doesNotMatch(rss, /Test Note/);
         assert.doesNotMatch(rss, /\[Publication\]/);
 
         const resume = readOutput("resume/index.html");
         assert.match(resume, /data-resume-state="available"/);
         assert.match(resume, /href="\/academic-portfolio-astro\/resume\.pdf"[^>]*>Open resume</);
-        assert.match(resume, /href="\/academic-portfolio-astro\/resume\.pdf"[^>]*download="resume\.pdf"[^>]*>Download PDF</);
+        assert.match(resume, /href="\/academic-portfolio-astro\/resume\.pdf"[^>]*download="Abdoulaye-Mbodj-Resume\.pdf"[^>]*>Download PDF</);
         assert.match(resume, /<iframe[^>]*src="\/academic-portfolio-astro\/resume\.pdf"/);
         assert.match(resume, /title="Resume PDF viewer"/);
     } finally {
         writeFileSync(bioFixture, originalBio);
         rmSync(projectFixture, { force: true });
-        rmSync(writingFixture, { force: true });
-        rmSync(publicResume, { force: true });
+        writeFileSync(publicResume, originalResume);
     }
 });
 
